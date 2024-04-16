@@ -1,0 +1,61 @@
+
+# WORKS: client_credential flow for Cognitive Service
+
+###
+
+# @name auth1
+
+POST https://login.microsoftonline.com/{{$dotenv %tenantId}}/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+&client_id={{$dotenv %clientId}}
+&resource=api://{{$dotenv %clientId}}
+&client_secret={{$dotenv %clientSecret}}
+
+###
+
+@authToken1 = {{auth1.response.body.access_token}}
+
+###
+
+POST https://cdw-speechtesting-20240404-ai.cognitiveservices.azure.com/stt/speech/recognition/conversation/cognitiveservices/v1?language=en-US&format=detailed HTTP/1.1
+authorization: Bearer {{authToken1}}
+Accept: application/json;text/xml
+Content-Type: audio/wav;
+
+< ./audio.wav
+
+
+
+# DOESN'T WORK: client_credential flow for Graph API
+
+###
+
+# @name auth2
+
+POST https://login.microsoftonline.com/{{$dotenv %tenantId}}/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+&client_id={{$dotenv %clientId}}
+&resource=https://graph.microsoft.com
+&client_secret={{$dotenv %clientSecret}}
+
+###
+
+@authToken2 = {{auth2.response.body.access_token}}
+
+###
+
+GET https://graph.microsoft.com/v1.0/me HTTP/1.1
+authorization: Bearer {{authToken2}}
+
+
+
+# WORKS: Built-in flow for Graph API
+
+###
+
+GET https://graph.microsoft.com/v1.0/me HTTP/1.1
+authorization: Bearer {{$aadV2Token new scopes:https://graph.microsoft.com/User.Read}}
