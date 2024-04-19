@@ -399,3 +399,7 @@ FodyWeavers.xsd
 
 # Ignore .env
 .env
+.mono
+src/appsettings.Development.json
+Testing2.http
+Testing.http
