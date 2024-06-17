@@ -1,5 +1,21 @@
+# Hello World with easiest settings
+
+POST https://cdw-speechtesting-20240404-ai.cognitiveservices.azure.com/stt/speech/recognition/conversation/cognitiveservices/v1?language=en-US&format=detailed HTTP/1.1
+Ocp-Apim-Subscription-Key: {{$dotenv %apiKey}}
+Accept: application/json;text/xml
+Content-Type: audio/wav;
+
+< ./audio.wav
+
 
 # WORKS: client_credential flow for Cognitive Service
+
+POST https://cdw-speechtesting-20240404-ai.cognitiveservices.azure.com/stt/speech/recognition/conversation/cognitiveservices/v1?language=en-US&format=detailed HTTP/1.1
+authorization: Bearer {{authToken1}}
+Accept: application/json;text/xml
+Content-Type: audio/wav;
+
+< ./audio.wav
 
 ###
 
